@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/pokemon/static/css/main.c70e218c.css",
+    "main.js": "/pokemon/static/js/main.2ca75f5a.js",
+    "static/js/787.b11c1f86.chunk.js": "/pokemon/static/js/787.b11c1f86.chunk.js",
+    "static/media/FightMusic.mp3": "/pokemon/static/media/FightMusic.3abde18ca4a5a9aa42d1.mp3",
+    "static/media/BackgroundMusic.mp3": "/pokemon/static/media/BackgroundMusic.748ee0ac43d13ce59a36.mp3",
+    "static/media/battle-bgr3.png": "/pokemon/static/media/battle-bgr3.00fa7166a42407d4776d.png",
+    "static/media/map.png": "/pokemon/static/media/map.075a0bf42d6989444330.png",
+    "static/media/volume-high-solid.svg": "/pokemon/static/media/volume-high-solid.8098f6edb05f02ad9ae789195ceb80b5.svg",
+    "static/media/volume-xmark-solid.svg": "/pokemon/static/media/volume-xmark-solid.1633bc313ebab9ef0e6dbfc7f6297af5.svg",
+    "index.html": "/pokemon/index.html",
+    "main.c70e218c.css.map": "/pokemon/static/css/main.c70e218c.css.map",
+    "main.2ca75f5a.js.map": "/pokemon/static/js/main.2ca75f5a.js.map",
+    "787.b11c1f86.chunk.js.map": "/pokemon/static/js/787.b11c1f86.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c70e218c.css",
+    "static/js/main.2ca75f5a.js"
+  ]
+}
