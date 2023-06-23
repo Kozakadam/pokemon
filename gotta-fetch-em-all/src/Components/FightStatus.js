@@ -17,8 +17,8 @@ function FightStatus({chosenPokemon, enemyPokemon, playerHp, enemyHp, playerMult
             enemyColor = 'orange';
         }
         return(
-            <div>
-                <div className='fightBackground'></div>
+            <div className='fightBackground'>
+                {/* <div ></div> */}
                 <div className='chosenPokemon'>
                     <img className='pokemonImg' src={chosenPokemon.sprites.back_default} id={chosenPokemon.id} alt="chosen pokemon"></img>
                     <div className='pokemonCard'>

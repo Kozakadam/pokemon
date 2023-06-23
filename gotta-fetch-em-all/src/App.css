@@ -7,23 +7,94 @@ body{
   background-size: cover;
   font-family: 'Press Start 2P';
   color: rgb(75, 70, 70);
+  z-index: -5;
 } 
 
 .App {
+  margin-left: 12.5vw;
   text-align: center;
+  display: grid;
+  grid-template-columns: 15vw 60vw;
+}
+
+.menuContainer{
+  background-color: rgb(218, 216, 185);
+  height: 80vh;
+  margin-top: 10vh;
+  border-radius: 10px 0 0 10px;
+  border-left: 8px solid rgb(37, 47, 4);
+  border-top: 8px solid rgb(37, 47, 4);
+  border-bottom: 8px solid rgb(37, 47, 4);
+}
+
+.gameContainer{
+  margin: 0 auto;
+  margin-top: 10vh;
+  width: 100%;
+  background-color: rgb(248, 246, 215);
+  height: 80vh;
+  overflow-y: auto;
+  border-radius: 0 10px 10px 0;
+  border-right: 8px solid rgb(37, 47, 4);
+  border-top: 8px solid rgb(37, 47, 4);
+  border-bottom: 8px solid rgb(37, 47, 4);
+}
+
+.startMenu{
+  margin: 0 auto;
+  font-size: 24px;
+  margin-top: 10vh;
+  padding: 10px;
+  font-family: 'Press Start 2P';
+  color: rgb(75, 70, 70);
+  /* border-radius: 5px;
+  background-color: rgb(248, 246, 215);
+  border: 3px solid rgb(37, 47, 4); */
+  line-height: 35px;
+  width: 40vw;
+}
+
+.pokemonLogo{
+  width: 24vw;
+}
+
+.startContext{
+  margin-bottom: 2vh;
+}
+
+.startButton{
+  font-size: 45px;
+  padding: 30px;
+  font-family: 'Press Start 2P';
+  background-color: rgb(248, 246, 215);
+  color: rgb(75, 70, 70);
+  border-radius: 5px;
+  /* border: 3px solid rgb(37, 47, 4); */
+  border: none;
+  line-height: 35px;
+  /* margin-bottom: 5vh; */
+}
+
+.startButton:hover{
+  cursor: pointer;
+  background-color: rgb(218, 216, 185);
 }
 
 .locationContainer{
-  width: 86vw;
-  margin: 0 auto;
-  margin-top: 2vw;
+  /* width: 60vw; */
+  /* background-image: url('./Images/map.png');
+  background-size: cover; */
+  min-height: 100%;
+  padding-left: 4%;
+  margin-right: 0%;
+  padding-top: 2vh;
   display: grid;
-  grid-template-columns: 20vw 20vw 20vw 20vw;
-  gap: 2vw;
+  grid-template-columns: 22.5% 22.5% 22.5% 22.5%;
+  gap: 2%;
 }
 
 .locationButton{
-  height: 15vh;
+  height: 12vh;
   padding: 30px;
   /* padding-top: 55px;
   padding-bottom: 55px; */
@@ -42,20 +113,20 @@ body{
 }
 
 .areaContainer{
-  width: 86vw;
-  margin: 0 auto;
+  margin-left: 2%;
+  margin-right: 2%;
   margin-top: 2vw;
   display: grid;
-  grid-template-columns: 20vw 20vw 20vw 20vw;
-  gap: 2vw;
+  grid-template-columns: 22.5% 22.5% 22.5% 22.5%;
+  gap: 2%;
 }
 
 .areaButton{
-  height: 15vh;
+  height: 12vh;
   padding: 30px;
-  vertical-align: middle;
+  /* vertical-align: middle; */
   /* padding-top: 55px; */
-  padding-bottom: 55px;
+  /* padding-bottom: 55px; */
   background-color: rgb(203, 185, 61, 0.8);
   font-size: 30px;
   font-style: bold;
@@ -71,62 +142,68 @@ body{
 
 .selectionBackground{
   background-image: url('./Images/battle-bgr3.png');
-  position: absolute;
+  position: relative;
   background-repeat: no-repeat;
   background-size: cover;
+  padding-top: 5vh;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 60vw;
+  height: 75vh;
 }
 
 .pokemonSelectionContainer{
+  position: relative;
   margin: 0 auto;
-  margin-top: 5vh;
+  /* padding-top: 5%; */
   display: grid;
-  grid-template-columns: 34vw 34vw;
-  grid-template-rows: 23vh 23vh 23vh;
-  gap: 2vw;
-  width: 70vw;
-  padding: 5vh;
-  border-radius: 10vh;
+  grid-template-columns: 49% 49%;
+  grid-template-rows: 32% 32% 32%;
+  gap: 2%;
+  width: 75%;
+  height: 75%;
+  padding: 5%;
+  border-radius: 3vh;
   background-color: rgb(248, 246, 215, 0.5);
-  border: 7px solid rgb(37, 47, 4);
+  border: 6px solid rgb(37, 47, 4);
 }
 
 .pokemonChangeContainer{
-  margin-left: 5vw;
-  margin-top: 5vh;
+  position: relative;
+  margin: 0 auto;
+  /* padding-top: 5%; */
   display: grid;
-  grid-template-columns: 27vw 27vw;
-  grid-template-rows: 23vh 23vh 23vh;
-  gap: 2vh;
-  width: 55vw;
-  padding: 5vh;
-  border-radius: 10vh;
+  grid-template-columns: 49% 49%;
+  grid-template-rows: 32% 32% 32%;
+  gap: 2%;
+  width: 75%;
+  height: 75%;
+  padding: 5%;
+  border-radius: 3vh;
   background-color: rgb(248, 246, 215, 0.5);
-  border: 7px solid rgb(37, 47, 4);
+  border: 6px solid rgb(37, 47, 4);
 }
 
 .pokemonChangeName{
+  margin-bottom: 2vh;
   font-size: 24px;
   text-transform: capitalize;
   font-family: 'Press Start 2P';
   vertical-align: middle;
   float: left;
-  margin-top: 3vh;
+  margin-top: 2vh;
 }
 
 .pokemonChangeImg{
   float: left;
-  height: 12vh;
+  height: 10vh;
   margin-left: 0.5vw;
 }
 
 .pokemonMulti{
   position: absolute;
   right: 1vw;
-  bottom: 12.5vh;
+  bottom: 10vh;
 
   float: right;
 }
@@ -134,43 +211,43 @@ body{
 .changePokemonsButton{
   background-color: rgb(248, 246, 215);
   border: 7px solid rgb(37, 47, 4);
-  border-radius: 10vh 10vh 10vh 1vh;
+  border-radius: 6vh 6vh 6vh 1vh;
   transition: all 300ms;
 }
 
 .changePokemonsButton:hover{
   cursor: pointer;
   background-color: rgb(221, 139, 110);
-  border-radius: 10vh 10vh 1vh 1vh;
+  border-radius: 6vh 6vh 1vh 1vh;
 }
 
 .newPokemon{
   z-index: 10;
   position: absolute;
-  height: 20vh;
-  left: 70vw;
-  width: 25vw;
-  top: 37vh;
+  height: 24vh;
+  left: 12.9vw;
+  width: 14vw;
+  top: 65vh;
   background-color: rgb(248, 246, 215);
   border: 7px solid rgb(37, 47, 4);
-  border-radius: 10vh 10vh 10vh 1vh;
+  border-radius: 6vh 6vh 6vh 1vh;
 }
 
 .newPokemon > img{
-  margin-top: 3vh;
-  float: left;
+  margin-top: 1vh;
+  /* float: left; */
   height: 12vh;
   margin-left: 0.5vw;
 }
 
 .newPokemonName{
-  padding-top: 3vh;
+  /* padding-top: 3vh; */
+  display: block;
   font-size: 24px;
   text-transform: capitalize;
   font-family: 'Press Start 2P';
-  vertical-align: middle;
-  float: left;
-  margin-top: 3vh;
+  /* float: left; */
+  margin-top: 1vh;
 }
 
 .hpNumbers{
@@ -189,14 +266,14 @@ body{
 .addPokemonsButton{
   background-color: rgb(248, 246, 215);
   border: 7px solid rgb(37, 47, 4);
-  border-radius: 10vh 10vh 10vh 1vh;
+  border-radius: 6vh 6vh 6vh 1vh;
   transition: all 300ms;
 }
 
 .addPokemonsButton:hover{
   cursor: pointer;
   background-color: rgb(104, 229, 169);
-  border-radius: 10vh 10vh 1vh 1vh;
+  border-radius: 6vh 6vh 1vh 1vh;
 }
 
 .plusButton{
@@ -242,8 +319,14 @@ body{
 }
 
 .skipButton{
+  margin: 0 auto;
   margin-top: 2vh;
-  margin-right: 9vw;
+  padding: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
+  display: block;
+  font-size: 18px;
+  /* margin-right: 9vw; */
 }
 
 .reTryButton:hover, .skipButton:hover, .rocketTeamButton:hover{
@@ -253,31 +336,33 @@ body{
 
 .fightBackground{
   background-image: url('./Images/battle-bgr3.png');
-  position: absolute;
+  position: relative;
   background-repeat: no-repeat;
   background-size: cover;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 60vw;
+  height: 80vh;
 }
 
 .chosenPokemon{
+  position:relative;  
   width: fit-content;
   position: absolute;
-  left: 18vw;
-  top: 25vh;
+  left: 1vw;
+  bottom: 1vh;
 }
 
 .enemyPokemon{
+  position:relative;  
   width: fit-content;
   position: absolute;
-  left: 65vw;
-  top: 12vh;
+  right: 1vw;
+  top: 1vh;
 }
 
 .pokemonCard{
-  width: 22vw;
+  width: 20vw;
   background-color: rgb(248, 246, 215);
   padding: 30px;
   border: 7px solid rgb(37, 47, 4);
@@ -285,7 +370,7 @@ body{
 }
 
 .pokemonName{
-  font-size: 30px;
+  font-size: 28px;
   text-transform: capitalize;
   text-align: left;
 }
@@ -295,7 +380,7 @@ body{
 }
 
 .chosenPokemon > img, .enemyPokemon > img{
-  min-width: 25vw;
+  min-width: 20vw;
   /* min-height: 18vh; */
 }
 
@@ -325,7 +410,7 @@ body{
   grid-template-columns: 2vw 15vw;
   height: 40px;
   background-color: rgb(88, 98, 90);
-  width: 18vw;
+  width: 11vw;
   border-radius: 5px;
   /* float: right; */
 }
@@ -344,7 +429,7 @@ body{
   height: 20px;
   margin-top: 7px;
   border-radius: 10px;
-  width: 15vw;
+  width: 8vw;
   border: 3px solid white;
 }
 
@@ -361,7 +446,7 @@ body{
 }
 
 .hpBar{
-  width: 15vw;
+  width: 8vw;
   height: 20px;
   /* margin-top: 0.5vh; */
   color: white;
@@ -374,41 +459,41 @@ body{
 
 .pokemonSelectionImg{
   float: left;
-  height: 18vh;
-  margin-left: 2vw;
+  height: 12vh;
+  margin-left: 0.2vw;
 }
 
 .pokemonSelectionName{
   margin-bottom: 2vh;
-  font-size: 30px;
+  font-size: 24px;
   text-transform: capitalize;
   font-family: 'Press Start 2P';
   vertical-align: middle;
   float: left;
-  margin-top: 3vh;
+  margin-top: 2vh;
 }
 
 .ownedPokemonsButton{
   background-color: rgb(248, 246, 215);
   border: 7px solid rgb(37, 47, 4);
-  border-radius: 10vh 10vh 10vh 1vh;
+  border-radius: 6vh 6vh 6vh 1vh;
   transition: all 300ms;
 }
 
 .ownedPokemonsButton:hover{
   cursor: pointer;
-  border-radius: 10vh 10vh 1vh 1vh;
+  border-radius: 6vh 6vh 1vh 1vh;
   background-color: rgb(218, 216, 185);
 }
 
 .statusMessage{
   position: relative;
   margin: 0 auto;
-  margin-top: 10vh;
+  margin-top: -70vh;
   width: max-content;
   padding: 30px;
-  padding-left: 100px;
-  padding-right: 100px;
+  padding-left: 60px;
+  padding-right: 60px;
   background-color: rgb(248, 246, 215, 0.85);
   z-index: 1;
   border-radius: 30px;

@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
-import Sound from 'react-sound';
 import './App.css';
+
 import Location from './Components/Locations.js';
 import OwnedPokemons from './Components/OwnedPokemons.js';
 import Areas from './Components/Areas.js';
 import FightStatus from './Components/FightStatus.js';
 import StatusMessage from './Components/StatusMessage.js';
 import KeepPokemonOrNot from './Components/KeepPokemonOrNot';
-import PlaySound from './Components/BackgroundMusic';
+import HomePage from './Components/HomePage';
+import SelectStarter from './Components/SelectStarter';
+
+// import Sound from 'react-sound';
+// import PlaySound from './Components/BackgroundMusic';
 
 const STARTER_POKEMONS = [
   'ekans',
@@ -23,12 +27,13 @@ let aiMultiplier = 1;
 function App() {
   const [locations, setLocations] = useState([]);
   const [areas, setAreas] = useState([]);
-  const [gameState, setGameState] = useState('location');
+  const [gameState, setGameState] = useState('start');
   const [ownedPokemons, setOwnedPokemons] = useState([]);
   const [enemyPokemon, setEnemyPokemon] = useState({});
   const [chosenPokemon, setChosenPokemon] = useState({});
   const [playerHp, setPlayerHp] = useState(-1);
   const [enemyHp, setEnemyHp] = useState(-1);
+  const [turn, setTurn] = useState(0)
   // const [damageMulti, setDamageMulti] = useState([1, 1]);
 
   useEffect(() => {
@@ -63,7 +68,7 @@ function App() {
     } else if (gameState === 'fight' && enemyHp <= 0) {
       setGameState('keepPokemonOrNot');
     }
-  }, [playerHp]);
+  }, [turn]);
 
   async function selectLocation(locationId) {
     
@@ -104,8 +109,9 @@ function App() {
     ), 1);
   }
 
-  async function fight() {
-    // console.log(playerMultiplier, aiMultiplier);
+  function fight() {
+    console.log(playerMultiplier, aiMultiplier);
+    console.log(chosenPokemon);
     const playerDmg = calculateDmg(
       Number(chosenPokemon.stats[1].base_stat),
       Number(enemyPokemon.stats[2].base_stat),
@@ -113,7 +119,7 @@ function App() {
     );
     console.log(playerDmg);
     setEnemyHp(() => enemyHp - playerDmg);
-    // console.log(`Enemy HP = ${enemyHp}`);
+    console.log(`Enemy HP = ${enemyHp}`);
     if (enemyHp > 0) {
       setTimeout(() => {
         const enemyDmg = calculateDmg(
@@ -123,66 +129,69 @@ function App() {
         );
         console.log(enemyDmg);
         setPlayerHp(() => playerHp - enemyDmg);
-        // console.log(`Player HP = ${playerHp}`);
-      }, 500);
+        if (playerHp <= 0 && playerHp !== -1){
+          setGameState('location');
+        }
+        console.log(`Player HP = ${playerHp}`);
+        setTurn(() => turn + 1);
+      }, 1000);
+    } else {
+        setGameState('keepPokemonOrNot');
     }
-    
+  }
+
+  async function startFight(pokemon){
+    await getPokemonTypes(pokemon, enemyPokemon);
+    setGameState('fight');
+    setTurn(1);
   }
 
  async function getPokemonTypes(playerPokemon, aiPokemon){
-  playerMultiplier = 1;
-  aiMultiplier = 1; 
-  // const playerTypes = getTypes(playerPokemon);
   const aiTypes = getTypes(aiPokemon);
-  console.log(playerPokemon.types);
   playerPokemon.types.map(async (type) => {
     const response = await fetch(type.type.url);
     const typeData = await response.json();
     // console.log(typeData);
-    typeData.damage_relations.double_damage_from.map((type2) => 
-      aiTypes.includes(type2.name) ? aiMultiplier = aiMultiplier * 2 : null);
-    typeData.damage_relations.double_damage_to.map((type2) => 
-      aiTypes.includes(type2.name) ? playerMultiplier = playerMultiplier * 2 : null);
-    typeData.damage_relations.half_damage_from.map((type2) => 
-      aiTypes.includes(type2.name) ? aiMultiplier = aiMultiplier * 0.5 : null);
-    typeData.damage_relations.half_damage_to.map((type2) => 
-      aiTypes.includes(type2.name) ? playerMultiplier = playerMultiplier * 0.5 : null);
-    typeData.damage_relations.no_damage_from.map((type2) => 
-      aiTypes.includes(type2.name) ? aiMultiplier = aiMultiplier * 0.25 : null);
-    typeData.damage_relations.no_damage_to.map((type2) => 
-      aiTypes.includes(type2.name) ? playerMultiplier = playerMultiplier * 0.25 : null);
+    updateMultipliers(typeData, aiTypes);
   });
+}
+
+function updateMultipliers(typeData, aiTypes){
+  playerMultiplier = 1;
+  aiMultiplier = 1; 
+  typeData.damage_relations.double_damage_from.forEach((type2) => 
+  aiTypes.includes(type2.name) ? aiMultiplier *= 2 : null);
+typeData.damage_relations.double_damage_to.forEach((type2) => 
+  aiTypes.includes(type2.name) ? playerMultiplier *= 2 : null);
+typeData.damage_relations.half_damage_from.forEach((type2) => 
+  aiTypes.includes(type2.name) ? aiMultiplier *= 0.5 : null);
+typeData.damage_relations.half_damage_to.forEach((type2) => 
+  aiTypes.includes(type2.name) ? playerMultiplier *= 0.5 : null);
+typeData.damage_relations.no_damage_from.forEach((type2) => 
+  aiTypes.includes(type2.name) ? aiMultiplier *= 0.25 : null);
+typeData.damage_relations.no_damage_to.forEach((type2) => 
+  aiTypes.includes(type2.name) ? playerMultiplier *= 0.25 : null);
 }
 
 function getTypes(pokemon){
   const types = []
-  pokemon.types.map((type) => {
+  pokemon.types.forEach((type) => {
     types.push(type.type.name);
   });
   return types;
 }
 
-/**
- * Choose a pokemon from the owned pokemons.
- * @constructor
- * @param {event} title - Click to the button of the chosen pokemon.
- */
-function choosePokemon(event) {
+async function choosePokemon(event) {
   const chosenPokemonId = Number(event.currentTarget.id);
-  ownedPokemons.forEach((pokemon) => {
-    if (pokemon.id === chosenPokemonId) {
-      getPokemonTypes(pokemon, enemyPokemon);
-      setPlayerHp(Number(pokemon.stats[0].base_stat));
-      setChosenPokemon(pokemon);
-      setGameState('fight');
-    }
-  });
-
+  const selectedPokemon = ownedPokemons.find((pokemon) => (pokemon.id === chosenPokemonId));
+  setChosenPokemon(() => selectedPokemon);
+  setPlayerHp(() => Number(selectedPokemon.stats[0].base_stat));
+  startFight(selectedPokemon);
  }
 
-  function reTry() {
-    setGameState('location');
-  }
+function reTry() {
+  setGameState('location');
+}
 
   //Change one of our owned pokemon with the defeated one.
   async function changePokemon(event) {
@@ -202,47 +211,57 @@ function choosePokemon(event) {
 
   return (
     <div className="App">
-      {/* {gameState !== 'fight' && <PlaySound/>} */}
-      {/* <PlaySound gameState={gameState} /> */}
-      {gameState === 'location' && (
-        <Location locations={locations} onSelect={selectLocation} />
-      )}
-      {gameState === 'location-area' && (
-        <Areas areas={areas} onSelect={selectArea} reTry={reTry} />
-      )}
-      {gameState === 'selectPokemon' && (
-        <OwnedPokemons
-          ownedPokemons={ownedPokemons}
-          gameState={gameState}
-          chosenPokemon={choosePokemon}
-        />
-      )}
-      {gameState === 'fight' && (
-        <FightStatus
-          chosenPokemon={chosenPokemon}
-          enemyPokemon={enemyPokemon}
+      <div className='menuContainer'>
+      </div>
+      <div className='gameContainer'>
+        {/* {gameState !== 'fight' && <PlaySound/>} */}
+        {/* <PlaySound gameState={gameState} /> */}
+        {gameState === 'start' && (
+          <HomePage setGameState={setGameState} />
+        )}
+        {gameState === 'selectStarter' && (
+          <HomePage setGameState={setGameState} />
+        )}
+        {gameState === 'location' && (
+          <Location locations={locations} onSelect={selectLocation} />
+        )}
+        {gameState === 'location-area' && (
+          <Areas areas={areas} onSelect={selectArea} reTry={reTry} />
+        )}
+        {gameState === 'selectPokemon' && (
+          <OwnedPokemons
+            ownedPokemons={ownedPokemons}
+            gameState={gameState}
+            chosenPokemon={choosePokemon}
+          />
+        )}
+        {gameState === 'fight' && (
+          <FightStatus
+            chosenPokemon={chosenPokemon}
+            enemyPokemon={enemyPokemon}
+            playerHp={playerHp}
+            enemyHp={enemyHp}
+            gameState={gameState}
+            playerMultiplier={playerMultiplier}
+            aiMultiplier={aiMultiplier}
+          />
+        )}
+        <StatusMessage
           playerHp={playerHp}
           enemyHp={enemyHp}
           gameState={gameState}
-          playerMultiplier={playerMultiplier}
-          aiMultiplier={aiMultiplier}
-        />
-      )}
-      <StatusMessage
-        playerHp={playerHp}
-        enemyHp={enemyHp}
-        gameState={gameState}
-        reTry={reTry}
-      />
-      {gameState === 'keepPokemonOrNot' && (
-        <KeepPokemonOrNot
-          ownedPokemons={ownedPokemons}
-          enemyPokemon={enemyPokemon}
-          changePokemon={changePokemon}
-          addPokemon={addPokemon}
           reTry={reTry}
         />
-      )}
+        {gameState === 'keepPokemonOrNot' && (
+          <KeepPokemonOrNot
+            ownedPokemons={ownedPokemons}
+            enemyPokemon={enemyPokemon}
+            changePokemon={changePokemon}
+            addPokemon={addPokemon}
+            reTry={reTry}
+          />
+        )}
+      </div>
     </div>
   );
 }
