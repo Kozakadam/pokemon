@@ -1,4 +1,4 @@
-function OwnedPokemons({ownedPokemons, gameState, chosenPokemon}){
+function OwnedPokemons({ownedPokemons, chosenPokemon}){
         return(
             <div className='selectionBackground'>
                 <div className='pokemonSelectionContainer'>
@@ -12,7 +12,7 @@ function OwnedPokemons({ownedPokemons, gameState, chosenPokemon}){
                                     <div className='hpBar'></div>
                                 </div>
                             </div>
-                            <div className='hpNumbers'>{`${pokemon.stats[0].base_stat}/${pokemon.stats[0].base_stat}`}</div>
+                            <div className='hpNumbers'>{`${pokemon.stats[0].stat.value}/${pokemon.stats[0].stat.value}`}</div>
                         </button>
                     })}
                 </div>

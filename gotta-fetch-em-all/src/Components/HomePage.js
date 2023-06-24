@@ -2,7 +2,7 @@ import logo from '../Images/pokemon-logo.png';
 
 function HomePage({setGameState}){
     function handleStart(){
-        setGameState(() => 'location');
+        setGameState(() => 'selectStarter');
     }
     return (
         <div className='startMenu'>
