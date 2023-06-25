@@ -1,4 +1,4 @@
-function pokemonParse(pokemon, level){
+function pokemonParse(pokemon, level, slot){
 
     const hpIv = Math.floor(Math.random() * 15);
     const attackIv = Math.floor(Math.random() * 15);
@@ -12,9 +12,12 @@ function pokemonParse(pokemon, level){
 
     const experience = Math.pow(level, 3);
 
+    let newSlot = 0;
+    if (slot) newSlot = slot;
 
     const pokemonData = {
         name: pokemon.name,
+        slot: newSlot,
         level: level,
         experience: experience,
         base_experience: Number(pokemon.base_experience),

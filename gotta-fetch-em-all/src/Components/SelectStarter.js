@@ -11,7 +11,7 @@ function SelectStarter({ setGameState, setOwnedPokemons, starterSelection}){
         <div className='starterContainer'>
             <div className='starterTitle'>Choose your starter pokemon!</div>
             <div className='starterGrid'>
-                {starterSelection.map((pokemon) => {
+                {starterSelection.sort((a, b) => a.id - b.id).map((pokemon) => {
                     return (
                         <button key={pokemon.id} id={pokemon.id} className='starterPokemon' onClick={(e) => selectPokemon(e)}>
                             <img className='starterImg' src={pokemon.sprites.front_default} alt='pokemon'></img>    

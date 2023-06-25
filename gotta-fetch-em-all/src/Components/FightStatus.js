@@ -1,13 +1,15 @@
 import Pokemon from './Pokemon';
 
-function FightStatus({chosenPokemon, enemyPokemon, playerHp, enemyHp, playerMultiplier, aiMultiplier}){
+function FightStatus({chosenPokemon, enemyPokemon, playerHp, enemyHp, playerMultiplier, aiMultiplier, exp}){
         return(
             <div className='fightBackground'>
                 <Pokemon
                 owner={'chosenPokemon'}
                 pokemon={chosenPokemon}
                 multiplier={playerMultiplier}
-                hp={playerHp}/>
+                hp={playerHp}
+                exp={exp}
+                />
 
                 <Pokemon
                 owner={'enemyPokemon'}

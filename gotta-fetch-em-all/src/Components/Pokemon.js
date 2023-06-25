@@ -1,4 +1,4 @@
-function Pokemons({ owner, pokemon, multiplier, hp }){
+function Pokemons({ owner, pokemon, multiplier, hp, exp }){
 
     let direction = 'back_default';
     if ( owner === 'enemyPokemon'){
@@ -9,6 +9,15 @@ function Pokemons({ owner, pokemon, multiplier, hp }){
     let color = 'rgb(104, 229, 169, 1)';
     if (hpBarLength < 4) color = 'red';
     else if (hpBarLength < 9) color = 'orange';
+
+    // const currentExp = pokemon.experience - Math.pow(pokemon.level, 3);
+    let maxExp = Math.pow(pokemon.level + 1, 3) - Math.pow(pokemon.level, 3);
+    let currentExp = exp;
+    // if ((currentExp / maxExp) >= 1){
+    //     currentExp = currentExp - maxExp;
+
+    // }
+    const xpBarLength = (currentExp / maxExp) * 16;
 
     return(
         <div className={owner}>
@@ -24,6 +33,13 @@ function Pokemons({ owner, pokemon, multiplier, hp }){
                 </div>
                 <div className='hpNumbers2'>{`${Math.max(hp, 0)}/${pokemon.stats[0].stat.value}`}</div>
             </div>
+            {owner === 'chosenPokemon' 
+            ? <div className='xpBarContainer'>
+                <div className='xpBarBackgroundFight'></div>
+                <div className='xpBarFight' style={{width: `${xpBarLength}vw`}}></div>
+                <span className='xpLabel'>EXP</span>
+            </div>
+            : null}
         </div>
     )
 }

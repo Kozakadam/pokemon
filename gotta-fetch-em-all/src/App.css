@@ -54,6 +54,10 @@ body{
   width: 40vw;
 }
 
+.capitalize{
+  text-transform: capitalize;
+}
+
 .pokemonLogo{
   width: 24vw;
 }
@@ -255,7 +259,7 @@ body{
 }
 
 .pokemonChangeName{
-  margin-bottom: 2vh;
+  margin-bottom: 1vh;
   font-size: 24px;
   text-transform: capitalize;
   font-family: 'Press Start 2P';
@@ -321,7 +325,7 @@ body{
 }
 
 .hpNumbers{
-  margin-top: 0.5vh;
+  margin-top: 0.8vh;
   font-family: 'Press Start 2P';
   text-align: left;
 }
@@ -423,7 +427,7 @@ body{
   width: fit-content;
   position: absolute;
   left: 1vw;
-  bottom: 1vh;
+  bottom: 3vh;
 }
 
 .enemyPokemon{
@@ -435,11 +439,13 @@ body{
 }
 
 .pokemonCard{
+  position: relative;
   width: 20vw;
   background-color: rgb(248, 246, 215);
   padding: 30px;
   border: 7px solid rgb(37, 47, 4);
   border-radius: 30px 5px 30px 5px;
+  z-index: 1;
 }
 
 .pokemonName{
@@ -484,7 +490,7 @@ body{
   height: 40px;
   background-color: rgb(88, 98, 90);
   width: 11vw;
-  border-radius: 5px;
+  border-radius: 5px 5px 0px 0px;
   /* float: right; */
 }
 
@@ -505,6 +511,85 @@ body{
   width: 8vw;
   border: 3px solid white;
 }
+
+.xpBar{
+  background-color: rgb(55, 185, 241);
+  height: 5px;
+  margin-top: 8px;
+  margin-left: -2vw;
+  /* border-radius: 10px; */
+  width: 6vw;
+  /* border: 3px solid white; */
+  border-radius: 0px 0px 10px 10px;
+  /* transition: all 1000; */
+}
+
+.xpBarBackground{
+  background-color: rgb(214, 211, 162);
+  height: 5px;
+  margin-top: 8px;
+  /* margin-left: -2vw; */
+  /* border-radius: 10px; */
+  width: 11vw;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.xpBarContainer{
+  position: relative;
+  margin-top: -7vh;
+  height: 8.5vh;
+  width: 95%;
+  margin-left: 2vw;
+  background-color: rgb(88, 98, 90);
+  border-radius: 3px 3px 30px 10px;
+  z-index: 0;
+}
+
+.xpBarFight{
+  position: relative;
+  background-color: rgb(55, 185, 241);
+  height: 10px;
+  top: calc(-10px + 7vh);
+  /* margin-top: 8px; */
+  margin-left: 3.5vw;
+  /* border-radius: 10px; */
+  width: 1vw;
+  /* border: 3px solid white; */
+  border-radius: 0px 0px 10px 10px;
+  z-index: 2;
+  transition: all 2000ms;
+}
+
+.xpBarBackgroundFight{
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 20;
+  background-color: rgb(214, 211, 162);
+  height: 10px;
+  top: 7vh;
+  margin-left: 3.5vw;
+  /* border-radius: 10px; */
+  width: 16vw;
+  border-radius: 0px 0px 10px 10px;
+  z-index: 2;
+}
+
+.xpLabel{
+  position: relative;
+  bottom: -4.7vh;
+  float: left;
+  margin-top: 11px;
+  margin-left: 1.8vw;
+  margin-bottom: 10px;
+  padding-left: 3px;
+  background-color: rgb(88 98, 90);
+  color: rgb(255, 217, 0);
+  text-align: center;
+  font-size: 12px;
+  border-radius: 5px 0 0 5px;
+  font-weight: bold;
+}
+
 
 .hpLabel{
   margin-top: 11px;
@@ -537,7 +622,7 @@ body{
 }
 
 .pokemonSelectionName{
-  margin-bottom: 2vh;
+  margin-bottom: 1vh;
   font-size: 24px;
   text-transform: capitalize;
   font-family: 'Press Start 2P';

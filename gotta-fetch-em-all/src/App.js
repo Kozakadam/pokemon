@@ -27,7 +27,8 @@ function App() {
   const [chosenPokemon, setChosenPokemon] = useState({});
   const [playerHp, setPlayerHp] = useState(-1);
   const [enemyHp, setEnemyHp] = useState(-1);
-  const [turn, setTurn] = useState(0)
+  const [turn, setTurn] = useState(0);
+  const [exp, setExp] = useState(0);
   // const [playerMultiplier, setPlayerMultiplier] = useState(1);
   // const [aiMultiplier, setAiMultiplier] = useState(1);
 
@@ -49,7 +50,7 @@ function App() {
           `https://pokeapi.co/api/v2/pokemon/${pokemon}`
         );
         const nextPokemon = await response.json();
-        pokemonCollection.push(pokemonParse(nextPokemon, 5));
+        pokemonCollection.push(pokemonParse(nextPokemon, 5, 0));
       });
       setStarterSelection(pokemonCollection);
     }
@@ -63,9 +64,9 @@ function App() {
       }, 1000);
     } else if (gameState === 'fight' && enemyHp <= 0) {
       console.log(ownedPokemons);
-      calculatExp(enemyPokemon);
+      calculateExp(enemyPokemon);
       console.log(ownedPokemons);
-      setGameState('keepPokemonOrNot');
+      // setGameState('keepPokemonOrNot');
     }
   }, [turn]);
 
@@ -99,7 +100,6 @@ function App() {
     const level = Math.ceil(Math.random() * 3);
     // console.log(level);
     setEnemyPokemon(pokemonParse(pokemon, level));
-    setEnemyHp(pokemonParse(pokemon, level).stats[0].stat.value);
   }
 
   function calculateDmg(attack, defense, multiplier) {
@@ -120,7 +120,7 @@ function App() {
     console.log(playerDmg);
     setEnemyHp(() => enemyHp - playerDmg);
     console.log(`Enemy HP = ${enemyHp}`);
-    if (enemyHp > 0) {
+    if (enemyHp - playerDmg > 0) {
       setTimeout(() => {
         const enemyDmg = calculateDmg(
           Number(enemyPokemon.stats[1].stat.value),
@@ -129,14 +129,11 @@ function App() {
         );
         console.log(enemyDmg);
         setPlayerHp(() => playerHp - enemyDmg);
-        if (playerHp <= 0 && playerHp !== -1){
-          setGameState('location');
-        }
         console.log(`Player HP = ${playerHp}`);
         setTurn(() => turn + 1);
       }, 1000);
     } else {
-      setGameState('keepPokemonOrNot');
+      calculateExp(enemyPokemon);
     }
   }
 
@@ -179,9 +176,10 @@ function getTypes(pokemon){
   return types;
 }
 
-function calculatExp(pokemon){
-  let xpGained = pokemon.base_experience * pokemon.level / 7;
+function calculateExp(pokemon){
+  let xpGained = Math.round(pokemon.base_experience * pokemon.level / 7);
   const currentPokemon = chosenPokemon;
+  setExp(() => exp + xpGained);
   currentPokemon.experience = currentPokemon.experience + xpGained;
   if (currentPokemon.experience > Math.pow((currentPokemon.level + 1), 3)){
     currentPokemon.level++;
@@ -189,6 +187,7 @@ function calculatExp(pokemon){
   }
   const newGang = ownedPokemons.filter((pokemon) => pokemon.id !== currentPokemon.id);
   newGang.push(currentPokemon);
+  newGang.sort()
   setOwnedPokemons(() => [...newGang]);
 }
 
@@ -213,8 +212,11 @@ function levelUp(pokemon){
 async function choosePokemon(event) {
   const chosenPokemonId = Number(event.currentTarget.id);
   const selectedPokemon = ownedPokemons.find((pokemon) => (pokemon.id === chosenPokemonId));
+  const currentExp = selectedPokemon.experience - Math.pow(selectedPokemon.level, 3);
   setChosenPokemon(() => selectedPokemon);
+  setExp(() => currentExp);
   setPlayerHp(() => Number(selectedPokemon.stats[0].stat.value));
+  setEnemyHp(() => Number(enemyPokemon.stats[0].stat.value));
   startFight(selectedPokemon);
  }
 
@@ -222,19 +224,28 @@ function reTry() {
   setGameState('location');
 }
 
-  //Change one of our owned pokemon with the defeated one.
+function continueAfterFight(){
+    setGameState('keepPokemonOrNot');
+}
+
   async function changePokemon(event) {
     const chosenPokemonId = Number(event.currentTarget.id);
+    const slot = ownedPokemons.find((pokemon) => Number(pokemon.id) === chosenPokemonId).slot;
+
     const newGang = ownedPokemons.filter(
       (pokemon) => Number(pokemon.id) !== chosenPokemonId
     );
+    enemyPokemon.slot = slot;
     newGang.push(enemyPokemon);
-    setOwnedPokemons([...newGang]);
+    newGang.sort((a, b) => a.slot - b.slot);
+    setOwnedPokemons(() => [...newGang]);
     setGameState('location');
   }
   
   async function addPokemon() {
-    setOwnedPokemons([...ownedPokemons, enemyPokemon]);
+    enemyPokemon.slot = ownedPokemons.length;
+    const newGang = [...ownedPokemons, enemyPokemon].sort((a, b) => a.slot - b.slot);
+    setOwnedPokemons([...newGang]);
     setGameState('location');
   }
 
@@ -275,6 +286,7 @@ function reTry() {
             playerHp={playerHp}
             enemyHp={enemyHp}
             gameState={gameState}
+            exp={exp}
             playerMultiplier={playerMultiplier}
             aiMultiplier={aiMultiplier}
           />
@@ -284,6 +296,9 @@ function reTry() {
           enemyHp={enemyHp}
           gameState={gameState}
           reTry={reTry}
+          accept={continueAfterFight}
+          enemyPokemon={enemyPokemon}
+          chosenPokemon={chosenPokemon}
         />
         {gameState === 'keepPokemonOrNot' && (
           <KeepPokemonOrNot
@@ -292,6 +307,7 @@ function reTry() {
             changePokemon={changePokemon}
             addPokemon={addPokemon}
             reTry={reTry}
+            exp={exp}
           />
         )}
       </div>
